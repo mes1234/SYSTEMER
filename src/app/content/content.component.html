@@ -1,0 +1,21 @@
+<mat-drawer-container class="container" autosize mode="over">
+    <app-content-paper></app-content-paper>
+
+    <mat-drawer #navigation class="example-sidenav" position="start">
+        <app-content-navigation></app-content-navigation>
+    </mat-drawer>
+
+    <mat-drawer #drawer class="example-sidenav" position="end">
+        <app-content-drawer></app-content-drawer>
+    </mat-drawer>
+</mat-drawer-container>
+
+
+<button type="button" mat-button (click)="drawer.toggle()">
+    Toggle drawer
+</button>
+<button type="button" mat-button (click)="navigation.toggle()">
+    Toggle navigation
+</button>
+
+<app-content-summary></app-content-summary>
