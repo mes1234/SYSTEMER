@@ -1,21 +1,27 @@
-<mat-drawer-container class="container" autosize mode="over">
-    <app-content-paper></app-content-paper>
+<div class="container">
+    <mat-drawer-container class="drawer-container" autosize mode="over">
 
-    <mat-drawer #navigation class="example-sidenav" position="start">
-        <app-content-navigation></app-content-navigation>
-    </mat-drawer>
+        <mat-drawer-content class="content">
+            <app-content-paper></app-content-paper>
+        </mat-drawer-content>
 
-    <mat-drawer #drawer class="example-sidenav" position="end">
-        <app-content-drawer></app-content-drawer>
-    </mat-drawer>
-</mat-drawer-container>
+        <mat-drawer #navigation position="start">
+            <app-content-navigation></app-content-navigation>
+        </mat-drawer>
 
+        <mat-drawer #drawer position="end">
+            <app-content-drawer></app-content-drawer>
+        </mat-drawer>
+    </mat-drawer-container>
+    <span class="buttons">
+        <button type="button" mat-raised-button (click)="navigation.toggle()">
+            Toggle navigation
+        </button>
+        <button type="button" mat-raised-button (click)="drawer.toggle()">
+            Toggle drawer
+        </button>
 
-<button type="button" mat-button (click)="drawer.toggle()">
-    Toggle drawer
-</button>
-<button type="button" mat-button (click)="navigation.toggle()">
-    Toggle navigation
-</button>
+    </span>
 
-<app-content-summary></app-content-summary>
+    <app-content-summary></app-content-summary>
+</div>
