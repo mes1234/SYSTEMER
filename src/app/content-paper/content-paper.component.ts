@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
-import { dia, layout, shapes } from 'jointjs'
+import joint, { dia, elementTools, layout, shapes } from 'jointjs'
 
 @Component({
   selector: 'app-content-paper',
@@ -14,53 +14,74 @@ export class ContentPaperComponent implements AfterViewInit {
   @ViewChild('graph')
   graphElement: ElementRef | any;
 
-  paper: any;
-  graph: any;
+  private paper!: dia.Paper;
+  private graph!: dia.Graph;
 
   public ngAfterViewInit(): void {
 
     var namespace = shapes;
 
-    var graph = new dia.Graph({}, { cellNamespace: namespace });
+    this.graph = new dia.Graph({}, { cellNamespace: namespace });
 
-    var paper = new dia.Paper({
+    this.paper = new dia.Paper({
       el: this.graphElement.nativeElement,
-      model: graph,
-      gridSize: 1,
-      width: this.graphElement.nativeElement.width,
-      height: this.graphElement.nativeElement.height,
-      cellViewNamespace: namespace
+      model: this.graph,
+      width: "100%",
+      height: "100%",
+      cellViewNamespace: namespace,
+      defaultLink: () => new shapes.standard.Link(),
+      gridSize: 20,
+      drawGrid: { name: "mesh" },
+      background: { color: "#F3F7F6" },
     });
 
-    var rect = new shapes.standard.Rectangle();
-    rect.position(100, 30);
-    rect.resize(100, 40);
-    rect.attr({
-      body: {
-        fill: 'blue'
-      },
-      label: {
-        text: 'Hello',
-        fill: 'white'
-      }
+
+    this.paper.on('element:mouseenter', function (elementView) {
+      elementView.showTools();
     });
-    rect.addTo(graph);
 
-    var rect2 = rect.clone();
-    rect2.translate(300, 0);
-    rect2.attr('label/text', 'World!');
-    rect2.addTo(graph);
+    this.paper.on('element:mouseleave', function (elementView) {
+      elementView.hideTools();
+    });
 
-    var link = new shapes.standard.Link();
-    link.source(rect);
-    link.target(rect2);
-    link.addTo(graph);
+    this.paper.on('blank:pointerdblclick', (evt, x, y) => {
+      console.log(`Paper was double-clicked at coordinates x: ${x}, y: ${y}`);
 
-    this.paper.setDimensions(
-      this.graphElement.nativeElement.offsetWidth,
-      this.graphElement.nativeElement.offsetHeight);
+      var rect = new shapes.standard.Rectangle();
+      rect.position(x, y);
+      rect.resize(100, 40);
+      rect.attr({
+        body: {
+          fill: 'blue'
+        },
+        label: {
+          text: 'NEW ONE',
+          fill: 'white'
+        }
+      });
+      rect.addTo(this.graph);
+
+      var boundaryTool = new elementTools.Boundary();
+      var removeButton = new elementTools.Remove();
+
+
+      var connectButton = new elementTools.Connect({
+        x: '100%',
+        y: '0%',
+        offset: { x: -5, y: -5 },
+        magnet: 'body',
+
+      });
+
+      var toolsView = new dia.ToolsView({
+        tools: [boundaryTool, removeButton, connectButton]
+      });
+
+      var elementView = rect.findView(this.paper);
+      elementView.addTools(toolsView);
+
+    });
 
   }
-
 }
 
