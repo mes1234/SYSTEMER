@@ -7,13 +7,14 @@ import { ContentSummaryComponent } from "../content-summary/content-summary.comp
 
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-content',
   standalone: true,
   templateUrl: './content.component.html',
   styleUrl: './content.component.less',
-  imports: [ContentNavigationComponent, ContentPaperComponent, ContentDrawerComponent, ContentSummaryComponent, MatSidenavModule, MatButtonModule]
+  imports: [ContentNavigationComponent, ContentPaperComponent, ContentDrawerComponent, ContentSummaryComponent, MatSidenavModule, MatButtonModule, RouterModule]
 })
 export class ContentComponent {
   showFiller = false;

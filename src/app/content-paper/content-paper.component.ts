@@ -1,7 +1,8 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, } from '@angular/core';
+import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
-import joint, { dia, elementTools, layout, shapes } from 'jointjs'
-
+import { dia, elementTools, linkTools, shapes } from 'jointjs'
+// TODO CLEAN IT UP
 @Component({
   selector: 'app-content-paper',
   standalone: true,
@@ -10,6 +11,9 @@ import joint, { dia, elementTools, layout, shapes } from 'jointjs'
   styleUrl: './content-paper.component.less'
 })
 export class ContentPaperComponent implements AfterViewInit {
+
+  constructor(private router: Router) { }
+
 
   @ViewChild('graph')
   graphElement: ElementRef | any;
@@ -23,6 +27,26 @@ export class ContentPaperComponent implements AfterViewInit {
 
     this.graph = new dia.Graph({}, { cellNamespace: namespace });
 
+    var removeButton = new linkTools.Remove();
+
+    const tools = [
+      new linkTools.Vertices(),
+      new linkTools.Segments(),
+      new linkTools.Boundary(),
+      new linkTools.Remove({ distance: -20 })
+    ];
+
+    const CustomLink = shapes.standard.Link.define;
+
+    CustomLink.prototype.addTools = function () {
+      const linkView = this.findView(this.paper);
+      linkView.addTools(new dia.ToolsView({
+        tools: tools
+      }));
+      linkView.showTools();  // Hide the tools initially if needed
+      return this;
+    };
+
     this.paper = new dia.Paper({
       el: this.graphElement.nativeElement,
       model: this.graph,
@@ -35,10 +59,28 @@ export class ContentPaperComponent implements AfterViewInit {
       background: { color: "#F3F7F6" },
     });
 
-
-    this.paper.on('element:mouseenter', function (elementView) {
-      elementView.showTools();
+    this.paper.on('link:pointerdown', (linkView) => {
+      const toolsView = new dia.ToolsView({
+        tools: tools
+      });
+      linkView.addTools(toolsView);
     });
+
+    this.paper.on('link:mouseleave', function (linkView) {
+      linkView.hideTools();
+    });
+
+
+    this.paper.on('element:mouseenter', (elementView: dia.ElementView) => {
+
+      elementView.showTools();
+
+      const model = (elementView as any).model;
+      const elementId = model.id;
+
+      this.router.navigate(['/element', elementId]);
+    });
+
 
     this.paper.on('element:mouseleave', function (elementView) {
       elementView.hideTools();
