@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
-import { ContentDrawerComponent } from './content-drawer/content-drawer.component';
+import { ElementSetupComponent } from './element-setup/element-setup.component';
 
 export const routes: Routes = [
     {
-        path: 'element/:elementId', component: ContentDrawerComponent
+        path: 'element/:elementId', component: ElementSetupComponent
     }
 ]; 

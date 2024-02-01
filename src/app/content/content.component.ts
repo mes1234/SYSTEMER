@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ContentNavigationComponent } from "../content-navigation/content-navigation.component";
 import { ContentPaperComponent } from "../content-paper/content-paper.component";
-import { ContentDrawerComponent } from "../content-drawer/content-drawer.component";
+import { ElementSetupComponent } from "../element-setup/element-setup.component";
 import { ContentSummaryComponent } from "../content-summary/content-summary.component";
 
 
@@ -14,7 +14,7 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   templateUrl: './content.component.html',
   styleUrl: './content.component.less',
-  imports: [ContentNavigationComponent, ContentPaperComponent, ContentDrawerComponent, ContentSummaryComponent, MatSidenavModule, MatButtonModule, RouterModule]
+  imports: [ContentNavigationComponent, ContentPaperComponent, ElementSetupComponent, ContentSummaryComponent, MatSidenavModule, MatButtonModule, RouterModule]
 })
 export class ContentComponent {
   showFiller = false;
