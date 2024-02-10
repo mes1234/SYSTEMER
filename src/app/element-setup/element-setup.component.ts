@@ -7,7 +7,7 @@ import { ElementSetup, ElementType } from '../common/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
-import { ChangeServiceService } from '../../services/change-service.service';
+import { ChangeServiceService } from '../sevices/change-service.service';
 
 @Component({
   selector: 'app-element-setup',
