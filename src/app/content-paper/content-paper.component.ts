@@ -53,10 +53,12 @@ export class ContentPaperComponent implements AfterViewInit {
       width: "100%",
       height: "100%",
       cellViewNamespace: namespace,
-      defaultLink: () => new shapes.standard.Link(),
+      defaultLink: () => new shapes.standard.Link({
+        router: { name: 'manhattan' }
+      }),
       gridSize: 20,
       drawGrid: { name: "mesh" },
-      background: { color: "#F3F7F6" },
+      background: { color: "lightblue" },
     });
 
     this.paper.on('link:pointerdown', (linkView) => {
@@ -70,7 +72,6 @@ export class ContentPaperComponent implements AfterViewInit {
       linkView.hideTools();
     });
 
-
     this.paper.on('element:mouseenter', (elementView: dia.ElementView) => {
 
       elementView.showTools();
@@ -81,13 +82,11 @@ export class ContentPaperComponent implements AfterViewInit {
       this.router.navigate(['/element', elementId]);
     });
 
-
     this.paper.on('element:mouseleave', function (elementView) {
       elementView.hideTools();
     });
 
     this.paper.on('blank:pointerdblclick', (evt, x, y) => {
-      console.log(`Paper was double-clicked at coordinates x: ${x}, y: ${y}`);
 
       var rect = new shapes.standard.Rectangle();
       rect.position(x, y);
@@ -124,6 +123,30 @@ export class ContentPaperComponent implements AfterViewInit {
 
     });
 
+    (this.graph as any).on('remove', function (cell: dia.Cell, graph: dia.Graph, opt: any) {
+      if (cell.isElement()) {
+        console.log('Element removed:', cell);
+      }
+
+      if (cell.isLink()) {
+        console.log('Link removed:', cell);
+      }
+    });
+
+    (this.graph as any).on('add', function (cell: dia.Cell, graph: dia.Graph, opt: any) {
+      if (cell.isElement()) {
+        console.log('Element added:', cell);
+      }
+
+      if (cell.isLink()) {
+        (cell as any).on('change:source change:target', () => {
+          if ((cell as any).get('source').id && (cell as any).get('target').id) {
+            console.log('Link fully connected:', cell);
+            console.log('Source ID:', (cell as any).get('source').id);
+            console.log('Target ID:', (cell as any).get('target').id);
+          }
+        });
+      }
+    });
   }
 }
-

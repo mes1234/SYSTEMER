@@ -19,7 +19,7 @@ export class ChangeServiceService {
     return {
       id: elementId,
       name: "dummy",
-      selectedType: ElementType.Amqp
+      selectedType: ElementType.Valve
     }
   }
 }

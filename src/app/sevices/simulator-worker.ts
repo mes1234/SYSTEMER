@@ -1,6 +1,6 @@
 // Background worker
 
-class Simulator {
+export class Simulator {
     sleepTime: number = 10;
 
 
