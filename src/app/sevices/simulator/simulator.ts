@@ -1,6 +1,4 @@
-import { Element, Item, Link, Operation } from '../common/Item';
-
-// Background worker
+import { Element, Item, Link, Operation } from '../../common/Item';
 
 export class Simulator {
 
@@ -52,23 +50,3 @@ export class Simulator {
     }
 
 }
-
-const sim = new Simulator();
-
-// sim.attachMessagePublisher(postMessage);
-
-sim.run();
-
-
-onmessage = (e: MessageEvent<Operation>) => {
-
-    let operation: Operation = e.data;
-
-    if (operation.itemType === undefined) return;
-
-    switch (e.type) {
-        // Add your cases here
-    }
-}
-
-postMessage('Hello from worker');
