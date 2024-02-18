@@ -1,4 +1,4 @@
-import { Simulator } from './simulator-worker';
+import { Simulator } from './simulator'
 
 
 describe('Simulator worker', () => {
