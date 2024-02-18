@@ -3,21 +3,6 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "node",
-      "request": "launch",
-      "name": "Debug Simulator",
-      "runtimeArgs": [
-        "-r",
-        "ts-node/register"
-      ],
-      "program": "${workspaceFolder}/sim_development/src/app.ts",
-      "outFiles": [
-        "${workspaceFolder}/out/**/*.js"
-      ],
-      "sourceMaps": true,
-      "console": "integratedTerminal"
-    },
-    {
       "name": "ng serve",
       "type": "msedge",
       "request": "launch",
