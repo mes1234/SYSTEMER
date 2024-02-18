@@ -14,17 +14,4 @@ export interface ElementSetup {
 }
 
 
-export interface Item {
-    name: string;
-    id: string;
-}
 
-export interface Element extends Item {
-    type: ElementType;
-}
-
-export interface Link extends Item {
-    type: LinkType;
-    upstreamElementId: string;
-    downstreamElementId: string;
-}
