@@ -2,8 +2,10 @@ import { Element, Item, Link, Operation } from '../../common/Item';
 
 export class Simulator {
 
+    private publisher!: { (message: any, targetOrigin: string, transfer?: Transferable[] | undefined): void; (message: any, options?: WindowPostMessageOptions | undefined): void; };
+
     attachMessagePublisher(postMessage: { (message: any, targetOrigin: string, transfer?: Transferable[] | undefined): void; (message: any, options?: WindowPostMessageOptions | undefined): void; }) {
-        throw new Error('Method not implemented.');
+        this.publisher = postMessage;
 
     }
     sleepTime: number = 10;
@@ -12,6 +14,8 @@ export class Simulator {
     async run() {
         while (true) {
             await this.calculate();
+
+            this.publisher("Hello from the simulator");
         }
     }
 
