@@ -2,6 +2,7 @@ import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, } from '@angul
 import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { dia, elementTools, linkTools, shapes } from 'jointjs'
+import { SolverInterfaceService } from '../sevices/solver-service/solver-interface.service';
 // TODO CLEAN IT UP
 @Component({
   selector: 'app-content-paper',
@@ -12,7 +13,7 @@ import { dia, elementTools, linkTools, shapes } from 'jointjs'
 })
 export class ContentPaperComponent implements AfterViewInit {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private solver: SolverInterfaceService) { }
 
 
   @ViewChild('graph')
@@ -24,6 +25,8 @@ export class ContentPaperComponent implements AfterViewInit {
   public ngAfterViewInit(): void {
 
     var namespace = shapes;
+
+    const ctx = this;
 
     this.graph = new dia.Graph({}, { cellNamespace: namespace });
 
@@ -136,6 +139,7 @@ export class ContentPaperComponent implements AfterViewInit {
     (this.graph as any).on('add', function (cell: dia.Cell, graph: dia.Graph, opt: any) {
       if (cell.isElement()) {
         console.log('Element added:', cell);
+        ctx.solver.AddVertex(cell.id.toString());
       }
 
       if (cell.isLink()) {
@@ -144,6 +148,8 @@ export class ContentPaperComponent implements AfterViewInit {
             console.log('Link fully connected:', cell);
             console.log('Source ID:', (cell as any).get('source').id);
             console.log('Target ID:', (cell as any).get('target').id);
+
+            ctx.solver.AddLink(cell.id.toString(), (cell as any).get('source').id.toString(), (cell as any).get('target').id.toString());
           }
         });
       }

@@ -8,6 +8,7 @@ import { ContentSummaryComponent } from "../content-summary/content-summary.comp
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
+import { SolverInterfaceService } from '../sevices/solver-service/solver-interface.service';
 
 @Component({
   selector: 'app-content',
@@ -18,4 +19,12 @@ import { RouterModule } from '@angular/router';
 })
 export class ContentComponent {
   showFiller = false;
+
+  constructor(private solver: SolverInterfaceService) {
+
+  }
+
+  calculate(): void {
+    this.solver.Calculate();
+  }
 }
